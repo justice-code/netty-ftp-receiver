@@ -4,8 +4,10 @@ import static java.lang.System.*;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.CharsetUtil;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -15,6 +17,9 @@ import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alexkasko.netty.ftp.fs.AbstractVirtualFile;
+import com.alexkasko.netty.ftp.fs.Permission;
 
 /**
  * Netty handler, partial implementation of <a href="http://tools.ietf.org/html/rfc959">RFC 959
@@ -150,6 +155,8 @@ public class FtpServerHandler extends SimpleChannelInboundHandler<String> {
 			list(ctx, args);
 		else if ("STOR".equals(cmd))
 			stor(ctx, args);
+		else if ("SIZE".equals(cmd)) 
+			size(ctx,args);
 		else if ("QUIT".equals(cmd))
 			quit(ctx, args);
 		else
@@ -267,7 +274,7 @@ public class FtpServerHandler extends SimpleChannelInboundHandler<String> {
 				send("503 Bad sequence of commands", ctx, "LIST", args);
 			send("150 Opening binary mode data connection for LIST " + args, ctx, "LIST", args);
 			try {
-				activeSocket.getOutputStream().write(CRLF);
+				writeListToClient(activeSocket.getOutputStream());
 				send("226 Transfer complete for LIST", ctx, "", args);
 			} catch (IOException e1) {
 				logger.warn("Exception thrown on writing through active socket: [" + activeSocket + "]", e1);
@@ -283,7 +290,7 @@ public class FtpServerHandler extends SimpleChannelInboundHandler<String> {
 			Socket clientSocket = null;
 			try {
 				clientSocket = passiveSocket.accept();
-				clientSocket.getOutputStream().write(CRLF);
+				writeListToClient(clientSocket.getOutputStream());
 				clientSocket.getOutputStream().close();
 				send("226 Transfer complete for LIST", ctx, "", args);
 			} catch (IOException e1) {
@@ -295,6 +302,14 @@ public class FtpServerHandler extends SimpleChannelInboundHandler<String> {
 			}
 		} else
 			send("503 Bad sequence of commands", ctx, "LIST", args);
+	}
+
+	private void writeListToClient(OutputStream outputStream) throws IOException{
+		AbstractVirtualFile f = new AbstractVirtualFile("test", Permission.READWRITE, Permission.WRITE, Permission.EXEC);
+		outputStream.write(f.getListString().getBytes(CharsetUtil.UTF_8));
+		outputStream.write("drwxrwxr-x   2 0     5     512 Nov 27  2012 .snap".getBytes());
+		outputStream.write(CRLF);
+		
 	}
 
 	/**
@@ -345,7 +360,10 @@ public class FtpServerHandler extends SimpleChannelInboundHandler<String> {
 		closePassiveSocket();
 		ctx.close();
 	}
-
+	
+	protected void size(ChannelHandlerContext ctx, String args) {
+		//TODO
+	}
 	private static void send(String response, ChannelHandlerContext ctx, String command, String args) {
 		if (logger.isDebugEnabled()) {
 			if (command.length() > 0)
