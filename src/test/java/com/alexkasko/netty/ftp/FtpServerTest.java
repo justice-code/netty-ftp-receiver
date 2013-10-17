@@ -16,6 +16,8 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
 
+import com.alexkasko.netty.ftp.cmd.DefaultCommandExecutionTemplate;
+
 /**
  * User: alexkasko
  * Date: 12/28/12
@@ -24,6 +26,7 @@ public class FtpServerTest {
 
     @Test
     public void test() throws IOException, InterruptedException {
+    	final DefaultCommandExecutionTemplate defaultCommandExecutionTemplate = new DefaultCommandExecutionTemplate(new ConsoleReceiver());
     	EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
     	ServerBootstrap b = new ServerBootstrap();
@@ -34,7 +37,7 @@ public class FtpServerTest {
 					protected void initChannel(SocketChannel ch) throws Exception {
 						ChannelPipeline pipe = ch.pipeline();
 			            pipe.addLast("decoder", new CrlfStringDecoder());
-			            pipe.addLast("handler", new FtpServerHandler(new ConsoleReceiver()));
+			            pipe.addLast("handler", new FtpServerHandler(defaultCommandExecutionTemplate));
 					}
 				
 				});
@@ -44,6 +47,7 @@ public class FtpServerTest {
         
         client.setBufferSize(0);
         client.connect("127.0.0.1", 2121);
+        assertEquals(230,client.user("anonymous"));
         
         // active
         assertTrue(client.setFileType(FTP.BINARY_FILE_TYPE));
