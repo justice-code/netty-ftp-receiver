@@ -1,4 +1,19 @@
-package com.alexkasko.netty.ftp.cmd;
+/**
+ * Copyright (C) 2013 codingtony (t.bussieres@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.butor.netty.handler.codec.ftp.cmd;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,23 +21,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.alexkasko.netty.ftp.DataReceiver;
-import com.alexkasko.netty.ftp.cmd.impl.CwdCmd;
-import com.alexkasko.netty.ftp.cmd.impl.DeleCmd;
-import com.alexkasko.netty.ftp.cmd.impl.ListCmd;
-import com.alexkasko.netty.ftp.cmd.impl.MkdCmd;
-import com.alexkasko.netty.ftp.cmd.impl.NoopCmd;
-import com.alexkasko.netty.ftp.cmd.impl.PasvCmd;
-import com.alexkasko.netty.ftp.cmd.impl.PortCmd;
-import com.alexkasko.netty.ftp.cmd.impl.PwdCmd;
-import com.alexkasko.netty.ftp.cmd.impl.QuitCmd;
-import com.alexkasko.netty.ftp.cmd.impl.RmdCmd;
-import com.alexkasko.netty.ftp.cmd.impl.RnfrCmd;
-import com.alexkasko.netty.ftp.cmd.impl.RntoCmd;
-import com.alexkasko.netty.ftp.cmd.impl.StorCmd;
-import com.alexkasko.netty.ftp.cmd.impl.SystCmd;
-import com.alexkasko.netty.ftp.cmd.impl.TypeCmd;
-import com.alexkasko.netty.ftp.cmd.impl.UserCmd;
+import com.butor.netty.handler.codec.ftp.DataReceiver;
+import com.butor.netty.handler.codec.ftp.impl.CwdCmd;
+import com.butor.netty.handler.codec.ftp.impl.DeleCmd;
+import com.butor.netty.handler.codec.ftp.impl.ListCmd;
+import com.butor.netty.handler.codec.ftp.impl.MkdCmd;
+import com.butor.netty.handler.codec.ftp.impl.NoopCmd;
+import com.butor.netty.handler.codec.ftp.impl.PasvCmd;
+import com.butor.netty.handler.codec.ftp.impl.PortCmd;
+import com.butor.netty.handler.codec.ftp.impl.PwdCmd;
+import com.butor.netty.handler.codec.ftp.impl.QuitCmd;
+import com.butor.netty.handler.codec.ftp.impl.RmdCmd;
+import com.butor.netty.handler.codec.ftp.impl.RnfrCmd;
+import com.butor.netty.handler.codec.ftp.impl.RntoCmd;
+import com.butor.netty.handler.codec.ftp.impl.StorCmd;
+import com.butor.netty.handler.codec.ftp.impl.SystCmd;
+import com.butor.netty.handler.codec.ftp.impl.TypeCmd;
+import com.butor.netty.handler.codec.ftp.impl.UserCmd;
 
 public class DefaultCommandExecutionTemplate extends CommandExecutionTemplate {
 	
