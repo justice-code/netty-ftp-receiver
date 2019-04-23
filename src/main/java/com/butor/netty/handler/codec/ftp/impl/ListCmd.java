@@ -15,6 +15,8 @@
  */
 package com.butor.netty.handler.codec.ftp.impl;
 
+import com.butor.netty.handler.codec.ftp.fs.AbstractVirtualFile;
+import com.butor.netty.handler.codec.ftp.fs.Permission;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
@@ -39,7 +41,7 @@ private final ActivePassiveSocketManager activePassiveSocketManager;
 	public void execute(ChannelHandlerContext ctx, String args) {
 		Socket activeSocket = activePassiveSocketManager.getActiveSocket(ctx);
 		ServerSocket passiveSocket = activePassiveSocketManager.getPassiveSocket(ctx);
-		FTPCommand lastFTPCommand = ctx.attr(FTPAttrKeys.LAST_COMMAND).get();
+		FTPCommand lastFTPCommand = ctx.channel().attr(FTPAttrKeys.LAST_COMMAND).get();
 		String lastCommand = lastFTPCommand != null ? lastFTPCommand.getCmd() : null;
 		
 		if ("PORT".equals(lastCommand)) {
@@ -97,6 +99,11 @@ private final ActivePassiveSocketManager activePassiveSocketManager;
 //				.getBytes());
 		outputStream.write(CRLF);
 
+	}
+
+	public static void main(String[] args) {
+		AbstractVirtualFile f = new AbstractVirtualFile("test", Permission.READWRITE, Permission.WRITE, Permission.EXEC);
+		System.out.println(f.getListString());
 	}
 
 }

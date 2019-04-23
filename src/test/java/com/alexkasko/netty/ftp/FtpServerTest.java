@@ -73,6 +73,7 @@ public class FtpServerTest {
         assertEquals("/foo",client.printWorkingDirectory());
         assertTrue(client.listFiles("/foo").length==0);
         assertTrue(client.storeFile("bar", new ByteArrayInputStream("content".getBytes())));
+        client.retrieveFile("bar", System.out);
         assertTrue(client.rename("bar", "baz"));
       //  assertTrue(client.deleteFile("baz"));
         

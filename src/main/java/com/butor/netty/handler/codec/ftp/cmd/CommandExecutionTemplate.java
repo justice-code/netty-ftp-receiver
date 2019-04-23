@@ -30,12 +30,11 @@ public abstract class CommandExecutionTemplate {
 		//TODO handle properly FTP States see p.53 RFC 959
 		FTPCommand command = getFTPCommand(cmd);
 		if (command != null) {
-			Boolean loggedIn = ctx.attr(FTPAttrKeys.LOGGED_IN).setIfAbsent(false);
-			loggedIn = ctx.attr(FTPAttrKeys.LOGGED_IN).get();
+			boolean loggedIn = ctx.channel().hasAttr(FTPAttrKeys.LOGGED_IN) ? ctx.channel().attr(FTPAttrKeys.LOGGED_IN).get() : false;
 			boolean isLogonCommand = command instanceof LogonCommand;
 			if ((!loggedIn && isLogonCommand) || (loggedIn && !isLogonCommand)) {
 				command.execute(ctx, args);
-				ctx.attr(FTPAttrKeys.LAST_COMMAND).set(command);
+				ctx.channel().attr(FTPAttrKeys.LAST_COMMAND).set(command);
 				return;
 			}
 		}

@@ -77,7 +77,7 @@ Fork of Alex Kasko's netty-receiver (https://github.com/alexkasko/netty-ftp-rece
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-handler</artifactId>
-			<version>4.0.11.Final</version>
+			<version>4.1.30.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

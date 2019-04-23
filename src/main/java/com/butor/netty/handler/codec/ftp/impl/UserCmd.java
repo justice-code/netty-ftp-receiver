@@ -30,6 +30,6 @@ public class UserCmd extends AbstractFTPCommand  implements LogonCommand {
 	@Override
 	public void execute(ChannelHandlerContext ctx, String args) {
 		send("230 USER LOGGED IN", ctx, args);
-		ctx.attr(FTPAttrKeys.LOGGED_IN).set(true);
+		ctx.channel().attr(FTPAttrKeys.LOGGED_IN).set(true);
 	}
 }
