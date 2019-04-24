@@ -25,6 +25,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTP;
@@ -67,13 +68,15 @@ public class FtpServerTest {
         assertEquals(230,client.user("anonymous"));
         
         // active
+
+        client.retrieveFile("libpcap-1.7.4.tar.gz", System.out);
+
         assertTrue(client.setFileType(FTP.BINARY_FILE_TYPE));
         assertEquals("/",client.printWorkingDirectory());
         assertTrue(client.changeWorkingDirectory("/foo"));
         assertEquals("/foo",client.printWorkingDirectory());
         assertTrue(client.listFiles("/foo").length==0);
         assertTrue(client.storeFile("bar", new ByteArrayInputStream("content".getBytes())));
-        client.retrieveFile("bar", System.out);
         assertTrue(client.rename("bar", "baz"));
       //  assertTrue(client.deleteFile("baz"));
         

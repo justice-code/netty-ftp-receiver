@@ -22,22 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.butor.netty.handler.codec.ftp.DataReceiver;
-import com.butor.netty.handler.codec.ftp.impl.CwdCmd;
-import com.butor.netty.handler.codec.ftp.impl.DeleCmd;
-import com.butor.netty.handler.codec.ftp.impl.ListCmd;
-import com.butor.netty.handler.codec.ftp.impl.MkdCmd;
-import com.butor.netty.handler.codec.ftp.impl.NoopCmd;
-import com.butor.netty.handler.codec.ftp.impl.PasvCmd;
-import com.butor.netty.handler.codec.ftp.impl.PortCmd;
-import com.butor.netty.handler.codec.ftp.impl.PwdCmd;
-import com.butor.netty.handler.codec.ftp.impl.QuitCmd;
-import com.butor.netty.handler.codec.ftp.impl.RmdCmd;
-import com.butor.netty.handler.codec.ftp.impl.RnfrCmd;
-import com.butor.netty.handler.codec.ftp.impl.RntoCmd;
-import com.butor.netty.handler.codec.ftp.impl.StorCmd;
-import com.butor.netty.handler.codec.ftp.impl.SystCmd;
-import com.butor.netty.handler.codec.ftp.impl.TypeCmd;
-import com.butor.netty.handler.codec.ftp.impl.UserCmd;
+import com.butor.netty.handler.codec.ftp.impl.*;
 
 public class DefaultCommandExecutionTemplate extends CommandExecutionTemplate {
 	
@@ -130,6 +115,7 @@ public class DefaultCommandExecutionTemplate extends CommandExecutionTemplate {
 						register(new SystCmd());
 						register(new TypeCmd());
 						register(new UserCmd());
+						register(new RetrCmd(activePassiveSocketManager));
 					}
 
 					void register(FTPCommand cmd) {
