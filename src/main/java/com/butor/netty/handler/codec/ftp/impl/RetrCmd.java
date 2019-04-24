@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Arrays;
 
 public class RetrCmd extends AbstractFTPCommand {
     private static final String separator = "#";
@@ -23,11 +24,11 @@ public class RetrCmd extends AbstractFTPCommand {
     @Override
     public void execute(ChannelHandlerContext ctx, String args) {
         String name = args;
-        long start = 0;
+        int start = 0;
         if (args.contains(separator)) {
             String[] arr = args.split(separator);
             name = arr[0];
-            start = Long.parseLong(arr[1]);
+            start = Integer.parseInt(arr[1]);
         }
 
         URL url = RetrCmd.class.getClassLoader().getResource("download/" + name);
@@ -44,6 +45,7 @@ public class RetrCmd extends AbstractFTPCommand {
             send("550 File not found. " + args, ctx, args);
             return;
         }
+        content = Arrays.copyOfRange(content, start, content.length);
 
         String lastCommand = ctx.channel().attr(FTPAttrKeys.LAST_COMMAND).get() != null ? ctx.channel().attr(FTPAttrKeys.LAST_COMMAND).get().getCmd() : null;
         Socket socket;
