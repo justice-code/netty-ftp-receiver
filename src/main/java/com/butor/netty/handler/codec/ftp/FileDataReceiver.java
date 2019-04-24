@@ -9,7 +9,12 @@ public class FileDataReceiver implements DataReceiver{
     @Override
     public void receive(String name, InputStream data) throws IOException {
         String folder = FileDataReceiver.class.getClassLoader().getResource("download").getFile();
-        try (OutputStream outputStream = new FileOutputStream(new File(folder, name))) {
+        File file = new File(folder, name);
+//        if (file.exists()) {
+//            return;
+//        }
+
+        try (OutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.copy(data, outputStream);
         }
     }
