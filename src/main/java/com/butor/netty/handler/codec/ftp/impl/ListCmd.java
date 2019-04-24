@@ -15,8 +15,10 @@
  */
 package com.butor.netty.handler.codec.ftp.impl;
 
-import com.butor.netty.handler.codec.ftp.fs.AbstractVirtualFile;
-import com.butor.netty.handler.codec.ftp.fs.Permission;
+import com.butor.netty.handler.codec.ftp.cmd.AbstractFTPCommand;
+import com.butor.netty.handler.codec.ftp.cmd.ActivePassiveSocketManager;
+import com.butor.netty.handler.codec.ftp.cmd.FTPAttrKeys;
+import com.butor.netty.handler.codec.ftp.cmd.FTPCommand;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
@@ -24,14 +26,9 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.butor.netty.handler.codec.ftp.cmd.AbstractFTPCommand;
-import com.butor.netty.handler.codec.ftp.cmd.ActivePassiveSocketManager;
-import com.butor.netty.handler.codec.ftp.cmd.FTPAttrKeys;
-import com.butor.netty.handler.codec.ftp.cmd.FTPCommand;
-
 public class ListCmd extends AbstractFTPCommand {
 
-private final ActivePassiveSocketManager activePassiveSocketManager;
+	private final ActivePassiveSocketManager activePassiveSocketManager;
 	
 	public ListCmd(ActivePassiveSocketManager activePassiveSocketManager) {
 		super("LIST");
@@ -100,10 +97,4 @@ private final ActivePassiveSocketManager activePassiveSocketManager;
 		outputStream.write(CRLF);
 
 	}
-
-	public static void main(String[] args) {
-		AbstractVirtualFile f = new AbstractVirtualFile("test", Permission.READWRITE, Permission.WRITE, Permission.EXEC);
-		System.out.println(f.getListString());
-	}
-
 }

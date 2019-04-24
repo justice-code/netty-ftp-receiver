@@ -28,7 +28,7 @@ public class CwdCmd extends AbstractFTPCommand {
 
 	@Override
 	public void execute(ChannelHandlerContext ctx, String args) {
-		ctx.attr(FTPAttrKeys.CWD).set(args);
+		ctx.channel().attr(FTPAttrKeys.CWD).set(args);
 		send("250 CWD command successful", ctx, args);
 	}
 

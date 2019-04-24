@@ -29,7 +29,7 @@ public class PwdCmd extends AbstractFTPCommand {
 
 	@Override
 	public void execute(ChannelHandlerContext ctx, String args) {
-		String curDir = ctx.attr(FTPAttrKeys.CWD).get();
+		String curDir = ctx.channel().attr(FTPAttrKeys.CWD).get();
 		send(String.format("257 \"%s\" is current directory",curDir == null ? "/" : curDir),ctx,args);
 	}
 

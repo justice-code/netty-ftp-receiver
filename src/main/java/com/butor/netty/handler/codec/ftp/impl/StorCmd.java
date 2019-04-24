@@ -41,7 +41,7 @@ public class StorCmd extends AbstractFTPCommand {
 
 	@Override
 	public void execute(ChannelHandlerContext ctx, String args) {
-		FTPCommand lastFTPCommand = ctx.attr(FTPAttrKeys.LAST_COMMAND).get();
+		FTPCommand lastFTPCommand = ctx.channel().attr(FTPAttrKeys.LAST_COMMAND).get();
 		String lastCommand = lastFTPCommand != null ? lastFTPCommand.getCmd() : null;
 		Socket activeSocket = activePassiveSocketManager.getActiveSocket(ctx);
 		ServerSocket passiveSocket = activePassiveSocketManager.getPassiveSocket(ctx);
