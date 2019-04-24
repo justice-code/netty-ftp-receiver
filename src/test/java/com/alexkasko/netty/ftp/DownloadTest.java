@@ -53,4 +53,35 @@ public class DownloadTest {
         client.retrieveFile("libpcap-1.7.4.tar.gz", new FileOutputStream(new File("./libpcap-1.7.4.tar.gz")));
 
     }
+
+
+    @Test
+    public void test2() throws IOException {
+        final DefaultCommandExecutionTemplate defaultCommandExecutionTemplate = new DefaultCommandExecutionTemplate(new FileDataReceiver());
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline pipe = ch.pipeline();
+                        pipe.addLast("decoder", new CrlfStringDecoder());
+                        pipe.addLast("handler", new FtpServerHandler(defaultCommandExecutionTemplate));
+                    }
+
+                });
+        b.localAddress(2121).bind();
+        FTPClient client = new FTPClient();
+//        https://issues.apache.org/jira/browse/NET-493
+
+        client.setBufferSize(0);
+        client.connect("127.0.0.1", 2121);
+        assertEquals(230,client.user("anonymous"));
+        assertTrue(client.setFileType(FTP.BINARY_FILE_TYPE));
+
+        client.retrieveFile("libpcap-1.7.4.tar.gz#10", new FileOutputStream(new File("./libpcap-1.7.4.tar.gz")));
+
+    }
 }
